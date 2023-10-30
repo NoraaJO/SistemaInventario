@@ -1,0 +1,22 @@
+-- Añadir la FOREIGN KEY a la tabla Pedido referenciando la tabla TipoPedido
+ALTER TABLE Articulo
+ADD CONSTRAINT FK_Articulo_TipoArticulo
+FOREIGN KEY (id_TipoArticulo)
+REFERENCES TipoArticulo(id_TipoArticulo);
+
+-- Añadir FOREIGN KEY a la tabla PedidoxUsuario referenciando las tablas Pedido y Usuario
+ALTER TABLE PedidoxUsuario
+ADD CONSTRAINT FK_PedidoxUsuario_Pedido
+FOREIGN KEY (id_Pedido)
+REFERENCES Pedido(id_Pedido);
+
+ALTER TABLE PedidoxUsuario
+ADD CONSTRAINT FK_PedidoxUsuario_Usuario
+FOREIGN KEY (id_Usuario)
+REFERENCES Usuario(id_Usuario);
+
+-- Añadir la FOREIGN KEY a la tabla Pedido referenciando la tabla TipoPedido
+ALTER TABLE Pedido
+ADD CONSTRAINT FK_Pedido_TipoPedido
+FOREIGN KEY (id_TipoPedido)
+REFERENCES TipoPedido(id_TipoPedido);

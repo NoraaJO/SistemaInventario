@@ -1,0 +1,49 @@
+-----Articulo-------
+
+CREATE TABLE Articulo(
+    id_Articulo INT PRIMARY KEY,
+    nombre NVARCHAR(128),
+    precio FLOAT, 
+    cantidad INT,
+    id_TipoArticulo INT   
+);
+
+
+-- Usuario
+CREATE TABLE Usuario(
+    id_Usuario INT PRIMARY KEY,
+    nombre NVARCHAR(128),
+    apellidos NVARCHAR(128), 
+    username NVARCHAR(128),
+    contraseña NVARCHAR(128)  
+);
+
+-- TipoArticulo
+CREATE TABLE TipoArticulo(
+    id_TipoArticulo INT PRIMARY KEY,
+    nombre NVARCHAR(128) 
+);
+
+-- TipoPedido
+CREATE TABLE TipoPedido(
+    id_TipoPedido INT PRIMARY KEY,
+    nombre NVARCHAR(128) 
+);
+
+-- Pedido
+CREATE TABLE Pedido(
+    id_Pedido INT PRIMARY KEY,
+    descripcion NVARCHAR(128),
+    nombreCliente NVARCHAR(128),
+    nombreEmpleado NVARCHAR(128), 
+    fechaPedido DATE,
+    pagoTotal FLOAT,
+    id_TipoPedido INT
+);
+
+-- PedidoxUsuario
+CREATE TABLE PedidoxUsuario(
+    id_PedidoxUsuario INT PRIMARY KEY,
+    id_Pedido INT,
+    id_Usuario INT
+);
