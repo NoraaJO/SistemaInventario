@@ -1,0 +1,103 @@
+CREATE PROCEDURE AgregarArticulo
+    @id_Articulo INT,
+    @nombre NVARCHAR(128),
+    @precio FLOAT,
+    @cantidad INT,
+    @id_TipoArticulo INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Articulo (id_Articulo, nombre, precio, cantidad, id_TipoArticulo)
+    VALUES (@id_Articulo, @nombre, @precio, @cantidad, @id_TipoArticulo);
+END;
+
+----
+
+CREATE PROCEDURE ActualizarArticuloPorNombre
+    @nombre NVARCHAR(128),
+    @nuevoPrecio FLOAT,
+    @nuevaCantidad INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Articulo
+    SET cantidad = @nuevaCantidad
+    WHERE nombre = @nombre;
+END;
+
+
+---
+
+CREATE PROCEDURE ConsultarArticuloPorNombre
+    @nombre NVARCHAR(128)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT A.nombre, T.nombre as TipoArticulo, A.cantidad
+    FROM Articulo A
+    INNER JOIN TipoArticulo T ON A.id_TipoArticulo = T.id_TipoArticulo
+    WHERE A.nombre = @nombre;
+END;
+
+---
+
+CREATE PROCEDURE AgregarPedidoConEmpleado
+    @id_Pedido INT,
+    @descripcion NVARCHAR(128),
+    @nombreCliente NVARCHAR(128),
+    @nombreEmpleado NVARCHAR(128),
+    @fechaPedido DATE,
+    @pagoTotal FLOAT,
+    @id_TipoPedido INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Pedido (id_Pedido, descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_TipoPedido)
+    VALUES (@id_Pedido, @descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_TipoPedido);
+END;
+
+---
+
+CREATE PROCEDURE ConsultarPedidosPorCliente
+    @nombreCliente NVARCHAR(128)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, T.nombre as TipoPedido
+    FROM Pedido P
+    INNER JOIN TipoPedido T ON P.id_TipoPedido = T.id_TipoPedido
+    WHERE P.nombreCliente = @nombreCliente;
+END;
+
+---
+
+CREATE PROCEDURE ConsultarPedidosPorEmpleado
+    @nombreEmpleado NVARCHAR(128)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, T.nombre as TipoPedido
+    FROM Pedido P
+    INNER JOIN TipoPedido T ON P.id_TipoPedido = T.id_TipoPedido
+    WHERE P.nombreEmpleado = @nombreEmpleado;
+END;
+
+
+---
+
+CREATE PROCEDURE ConsultarArticulosPorCantidad
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM Articulo
+    WHERE cantidad <= 3;
+END;
+
