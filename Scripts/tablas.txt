@@ -40,10 +40,10 @@ CREATE TABLE Pedido(
     id_Estado INT
 );
 
-# el primary key para que no sea tan dificil de manejar se puede dejar como id no es necesario el nombre largo
+
 -- PedidoxUsuario
 CREATE TABLE PedidoxUsuario(
-    id_PedidoxUsuario INT IDENTITY(1,1) PRIMARY KEY,
+    id INT IDENTITY(1,1) PRIMARY KEY,
     id_Pedido INT,
     id_Usuario INT
 );

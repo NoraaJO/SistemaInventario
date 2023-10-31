@@ -1,22 +1,34 @@
 ##########################################$
 # Falta un procedured para iniciar sesion #
 ###########################################
--- Agrega nuevo articulo
-##################################################################################################################################################
-# Vas a obtener el id de tipo articulo antes de hacer la inserción o cuando? recuerde que el dato de entrada es el nombre no @id_TipoArticulo INT# 
-##################################################################################################################################################
-CREATE PROCEDURE AgregarArticulo
-    @nombre NVARCHAR(128),
-    @precio FLOAT,
-    @cantidad INT,
-    @id_TipoArticulo INT
+
+---Todos los articulos---
+
+CREATE PROCEDURE ObtenerArticulos
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    INSERT INTO Articulo (nombre, precio, cantidad, id_TipoArticulo)
-    VALUES (@nombre, @precio, @cantidad, @id_TipoArticulo);
+    SELECT A.id_Articulo, A.nombre, A.precio, A.cantidad, T.nombre as TipoArticulo
+    FROM Articulo A
+    INNER JOIN TipoArticulo T
+    ON A.id_TipoArticulo = T.id_TipoArticulo
+    FOR JSON AUTO;
 END;
+
+
+---Todos los pedidos---
+
+CREATE PROCEDURE ObtenerPedidos
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, E.nombre as nombreEstado
+    FROM Pedido P
+    INNER JOIN Estado E
+    ON P.id_Estado = E.id_Estado
+    FOR JSON AUTO;
+END;
+
 
 ----
 ##########################################################################################################
@@ -37,9 +49,6 @@ END;
 
 
 ---
-####################################################################################
-# Falta el procedured para articulos y pedidos que muestre todos sin ningun filtro #
-####################################################################################
 
 CREATE PROCEDURE ConsultarArticuloPorNombre
     @nombre NVARCHAR(128)
@@ -72,24 +81,7 @@ END;
 
 
 ---
-#################################################################################################################################################
-# Vas a obtener el id de tipo articulo antes de hacer la inserción o cuando? recuerde que el dato de entrada es el nombre no @id_TipoPedido INT #
-# Y no es tipo de pedido es estado recuerde.                                                                                                    #
-#################################################################################################################################################
-CREATE PROCEDURE AgregarPedido --REVISAR
-    @descripcion NVARCHAR(128),
-    @nombreCliente NVARCHAR(128),
-    @nombreEmpleado NVARCHAR(128),
-    @fechaPedido DATE,
-    @pagoTotal FLOAT,
-    @id_TipoPedido INT
-AS
-BEGIN
-    SET NOCOUNT ON;
 
-    INSERT INTO Pedido (descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_TipoPedido)
-    VALUES (@descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_TipoPedido);
-END;
 ###########################
 # Falta actualizar pedido #
 ###########################
@@ -149,5 +141,67 @@ BEGIN
     SELECT *
     FROM Articulo
     WHERE cantidad <= 3;
+END;
+
+----------
+################################################
+AGREGAR ARTICULO
+
+CREATE PROCEDURE AgregarArticulo
+    @nombre NVARCHAR(128),
+    @precio FLOAT,
+    @cantidad INT,
+    @nombreTA NVARCHAR(128) 
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @id_TipoArticulo INT;
+
+    -- Buscar el id correspondiente a @nombreTA en la tabla TipoArticulo
+    SELECT @id_TipoArticulo = id_Articulo FROM TipoArticulo WHERE nombre = @nombreTA;
+
+    -- Si se encontró un id válido, realizar la inserción en la tabla Articulo
+    IF @id_TipoArticulo IS NOT NULL
+    BEGIN
+        INSERT INTO Articulo (nombre, precio, cantidad, id_TipoArticulo)
+        VALUES (@nombre, @precio, @cantidad, @id_TipoArticulo);
+    END
+    ELSE
+    BEGIN
+        -- Manejar la situación donde no se encontró un id correspondiente en TipoArticulo
+        PRINT 'El tipo de artículo especificado no existe.';
+    END
+END;
+
+###########################################
+
+CREATE PROCEDURE AgregarPedido
+    @descripcion NVARCHAR(128),
+    @nombreCliente NVARCHAR(128),
+    @nombreEmpleado NVARCHAR(128),
+    @fechaPedido DATE,
+    @pagoTotal FLOAT,
+    @nombreP NVARCHAR(128) 
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @id_TipoPedido INT;
+
+    -- Buscar el id correspondiente a @id_Estado en la tabla Estado
+    SELECT @id_TipoPedido = id_Estado FROM Estado WHERE nombre = @nombreP;
+
+    -- Si se encontró un id válido, realizar la inserción en la tabla Pedido
+    IF @id_TipoPedido IS NOT NULL
+    BEGIN
+        INSERT INTO Pedido (descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_Estado)
+        VALUES (@descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_Estado);
+    END
+    ELSE
+    BEGIN
+        -- Manejar la situación donde no se encontró un id correspondiente en Estado
+        PRINT 'El estado especificado no existe.';
+    END
 END;
 
