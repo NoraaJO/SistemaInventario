@@ -1,5 +1,6 @@
+
+-- Agrega nuevo articulo
 CREATE PROCEDURE AgregarArticulo
-    @id_Articulo INT,
     @nombre NVARCHAR(128),
     @precio FLOAT,
     @cantidad INT,
@@ -8,8 +9,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Articulo (id_Articulo, nombre, precio, cantidad, id_TipoArticulo)
-    VALUES (@id_Articulo, @nombre, @precio, @cantidad, @id_TipoArticulo);
+    INSERT INTO Articulo (nombre, precio, cantidad, id_TipoArticulo)
+    VALUES (@nombre, @precio, @cantidad, @id_TipoArticulo);
 END;
 
 ----
@@ -39,13 +40,30 @@ BEGIN
     SELECT A.nombre, T.nombre as TipoArticulo, A.cantidad
     FROM Articulo A
     INNER JOIN TipoArticulo T ON A.id_TipoArticulo = T.id_TipoArticulo
-    WHERE A.nombre = @nombre;
+    WHERE A.nombre = @nombre
+    FOR JSON PATH, ROOT('ArticuloxNombre');
 END;
 
 ---
 
-CREATE PROCEDURE AgregarPedidoConEmpleado
-    @id_Pedido INT,
+CREATE PROCEDURE ConsultarArticuloPorTipo
+    @id_TipoArticulo INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT A.nombre, TA.nombre as TipoArticulo, A.cantidad
+    FROM Articulo A
+    INNER JOIN TipoArticulo TA ON A.id_TipoArticulo = TA.id_TipoArticulo
+    WHERE A.id_TipoArticulo = @id_TipoArticulo
+    FOR JSON PATH, ROOT('ArticuloxTipo');
+END; 
+
+
+
+---
+
+CREATE PROCEDURE AgregarPedido --REVISAR
     @descripcion NVARCHAR(128),
     @nombreCliente NVARCHAR(128),
     @nombreEmpleado NVARCHAR(128),
@@ -56,8 +74,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Pedido (id_Pedido, descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_TipoPedido)
-    VALUES (@id_Pedido, @descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_TipoPedido);
+    INSERT INTO Pedido (descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_TipoPedido)
+    VALUES (@descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_TipoPedido);
 END;
 
 ---
@@ -71,12 +89,28 @@ BEGIN
     SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, T.nombre as TipoPedido
     FROM Pedido P
     INNER JOIN TipoPedido T ON P.id_TipoPedido = T.id_TipoPedido
-    WHERE P.nombreCliente = @nombreCliente;
+    WHERE P.nombreCliente = @nombreCliente
+    FOR JSON PATH, ROOT('PedidoxCliente');
 END;
 
 ---
 
 CREATE PROCEDURE ConsultarPedidosPorEmpleado
+    @id_Estado INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, T.nombre as TipoPedido
+    FROM Pedido P
+    INNER JOIN TipoPedido T ON P.id_TipoPedido = T.id_TipoPedido
+    WHERE P.id_Estado = @id_Estado
+    FOR JSON PATH, ROOT('PedidoxEmpleado');
+END;
+
+---
+
+CREATE PROCEDURE ConsultarPedidosPorEstado
     @nombreEmpleado NVARCHAR(128)
 AS
 BEGIN
@@ -85,7 +119,8 @@ BEGIN
     SELECT P.id_Pedido, P.descripcion, P.nombreCliente, P.nombreEmpleado, P.fechaPedido, P.pagoTotal, T.nombre as TipoPedido
     FROM Pedido P
     INNER JOIN TipoPedido T ON P.id_TipoPedido = T.id_TipoPedido
-    WHERE P.nombreEmpleado = @nombreEmpleado;
+    WHERE P.nombreEmpleado = @nombreEmpleado
+    FOR JSON PATH, ROOT('PedidoxEmpleado');
 END;
 
 

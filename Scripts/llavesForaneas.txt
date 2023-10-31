@@ -17,6 +17,6 @@ REFERENCES Usuario(id_Usuario);
 
 -- Añadir la FOREIGN KEY a la tabla Pedido referenciando la tabla TipoPedido
 ALTER TABLE Pedido
-ADD CONSTRAINT FK_Pedido_TipoPedido
-FOREIGN KEY (id_TipoPedido)
-REFERENCES TipoPedido(id_TipoPedido);
+ADD CONSTRAINT FK_Pedido_Estado
+FOREIGN KEY (id_Estado)
+REFERENCES Estado(id_Estado);
