@@ -74,7 +74,7 @@ def reporteInventario():
     query =f"""dbo.ConsultarArticulosPorCantidad"""
     cursor.execute(query)
     return loads(cursor.fetchone()[0])
-@app.route('actualizarArticulo', methods=['PUT'])
+@app.route('/actualizarArticulo', methods=['PUT'])
 def actualizarArticulo():
     nombre = request.json['nombre']
     precio = request.json['precio']
@@ -84,9 +84,6 @@ def actualizarArticulo():
         query =f"""dbo.ActualizarArticuloPorNombre {nombre}, {precio}, {cantidad}"""
         cursor.execute(query)
         return loads(cursor.fetchone()[0])
-    return {'response': '400'}
-@app.route('/error', methods=['GET'])
-def pruebaE():
     return {'response': '400'}
 
 if __name__=="__main__":

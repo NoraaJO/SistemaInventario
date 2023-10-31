@@ -1,5 +1,10 @@
-
+##########################################$
+# Falta un procedured para iniciar sesion #
+###########################################
 -- Agrega nuevo articulo
+##################################################################################################################################################
+# Vas a obtener el id de tipo articulo antes de hacer la inserción o cuando? recuerde que el dato de entrada es el nombre no @id_TipoArticulo INT# 
+##################################################################################################################################################
 CREATE PROCEDURE AgregarArticulo
     @nombre NVARCHAR(128),
     @precio FLOAT,
@@ -14,7 +19,9 @@ BEGIN
 END;
 
 ----
-
+##########################################################################################################
+# Actualizar hay un problema si es por nombre ya que puede actualizar algun articulo con el mismo nombre #
+##########################################################################################################
 CREATE PROCEDURE ActualizarArticuloPorNombre
     @nombre NVARCHAR(128),
     @nuevoPrecio FLOAT,
@@ -30,6 +37,9 @@ END;
 
 
 ---
+####################################################################################
+# Falta el procedured para articulos y pedidos que muestre todos sin ningun filtro #
+####################################################################################
 
 CREATE PROCEDURE ConsultarArticuloPorNombre
     @nombre NVARCHAR(128)
@@ -62,7 +72,10 @@ END;
 
 
 ---
-
+#################################################################################################################################################
+# Vas a obtener el id de tipo articulo antes de hacer la inserción o cuando? recuerde que el dato de entrada es el nombre no @id_TipoPedido INT #
+# Y no es tipo de pedido es estado recuerde.                                                                                                    #
+#################################################################################################################################################
 CREATE PROCEDURE AgregarPedido --REVISAR
     @descripcion NVARCHAR(128),
     @nombreCliente NVARCHAR(128),
@@ -77,7 +90,9 @@ BEGIN
     INSERT INTO Pedido (descripcion, nombreCliente, nombreEmpleado, fechaPedido, pagoTotal, id_TipoPedido)
     VALUES (@descripcion, @nombreCliente, @nombreEmpleado, @fechaPedido, @pagoTotal, @id_TipoPedido);
 END;
-
+###########################
+# Falta actualizar pedido #
+###########################
 ---
 
 CREATE PROCEDURE ConsultarPedidosPorCliente
