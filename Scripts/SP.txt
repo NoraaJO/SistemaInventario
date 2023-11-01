@@ -96,7 +96,6 @@ BEGIN
         UPDATE Pedido
         SET descripcion = @descripcion,
             nombreCliente = @nombreCliente,
-            nombreEmpleado = @nombreEmpleado,
             fechaPedido = @fechaPedido,
             pagoTotal = @pagoTotal,
             id_Estado = @id_Estado
