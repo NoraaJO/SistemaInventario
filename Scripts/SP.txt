@@ -1,6 +1,22 @@
 ##########################################$
-# Falta un procedured para iniciar sesion #
+iniciar sesion 
 ###########################################
+
+CREATE PROCEDURE VerificarCredenciales
+    @username NVARCHAR(128),
+    @contraseña NVARCHAR(128),
+    @resultado INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM Usuario WHERE username = @username AND contraseña = @contraseña)
+        SET @resultado = 1; -- Credenciales válidas
+    ELSE
+        SET @resultado = 0; -- Credenciales inválidas
+END;
+
+
 
 ---Todos los articulos---
 
@@ -111,6 +127,8 @@ END;
 
 ---
 ---
+##########################################
+##########################################
 
 CREATE PROCEDURE ConsultarArticuloPorNombre
     @nombre NVARCHAR(128)
@@ -159,7 +177,7 @@ END;
 
 ---
 
-CREATE PROCEDURE ConsultarPedidosPorEmpleado
+CREATE PROCEDURE ConsultarPedidosPorEstado
     @id_Estado INT
 AS
 BEGIN
@@ -174,7 +192,7 @@ END;
 
 ---
 
-CREATE PROCEDURE ConsultarPedidosPorEstado
+CREATE PROCEDURE ConsultarPedidosPorEmpleado
     @nombreEmpleado NVARCHAR(128)
 AS
 BEGIN
