@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 import SignupForm from './pages/SignupForm';
-import ActualizarArticulo from "./pages/actualizarArticulo";
 import ActualizarPedido from './pages/actualizarPedido';
 import CrearArticulo from './pages/crearArticulo';
+import EditarArticulo from "./pages/editarArticulo";
 import InventarioForm from "./pages/inventario";
 import { LoginForm } from "./pages/login";
 import { LogOut } from "./pages/logout";
@@ -27,7 +27,7 @@ function App() {
             <Route path="mostrarInventario" element={<MostrarInventario />} />
             <Route path="menuPedidos" element={<MenuPedidos />} />
             <Route path="nuevoPedido" element={<NuevoPedido />} />
-            <Route path="actualizarArticulo" element={<ActualizarArticulo/>} />
+            <Route path="editarArticulo" element={<EditarArticulo/>} />
             <Route path="logout" element={<LogOut />} />
           <Route path="signupForm" element={<SignupForm />} />
         </Routes>

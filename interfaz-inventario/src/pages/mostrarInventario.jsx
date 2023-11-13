@@ -37,7 +37,7 @@ function MostrarInventario() {
 
   const handleEdit = (id) => {
     // Puedes redirigir a una página de edición pasando el ID como parámetro
-    navigate(`/actualizarArticulo/${id}`);
+    navigate(`/editarArticulo/${id}`);
   };
 
   const handleSearch = () => {
