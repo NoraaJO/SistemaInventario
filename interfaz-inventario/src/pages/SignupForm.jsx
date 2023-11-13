@@ -42,7 +42,7 @@ const SignupForm = () => {
     }
 
     try {
-      // Replace this with your actual API endpoint to send the data to the server
+      // CAMBIAR
       const response = await fetch("http://localhost:9012/signup/", {
         method: "POST",
         headers: {
@@ -61,11 +61,10 @@ const SignupForm = () => {
         // root.render(<ProfilePage formData={data} />);
         navigate("/home");
       } else {
-        // Handle errors here
-        console.error("Signup failed:", response.statusText);
+        console.error("Acción Fallida:", response.statusText);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error", error);
     }
   };
 
@@ -122,7 +121,7 @@ const SignupForm = () => {
               <button className="button2" type="button" onClick={handleCancel}>
                 Cancelar
               </button>
-              <button className="button2" type="submit">
+              <button className="button2" type="button" onClick={handleSubmit}>
                 Crear cuenta
               </button>
             </div>

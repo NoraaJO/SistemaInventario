@@ -1,4 +1,4 @@
-import { default as React, default as React, useState } from "react";
+import { default as React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "../styles/mainPage.css"; // Importa CSS

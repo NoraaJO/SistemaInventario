@@ -1,48 +1,60 @@
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "../styles/mainPage.css";
 import "../styles/navbar.css";
 
-const columns = [
-  { field: 'name', headerName: 'Nombre', width: 200 },
-  { field: 'type', headerName: 'Tipo', width: 150 },
-  { field: 'quantity', headerName: 'Cantidad', width: 150 },
-  {
-    field: 'edit',
-    headerName: 'Editar',
-    width: 100,
-    renderCell: (params) => (
-      <button onClick={() => handleEdit(params.row.id)}>Editar</button>
-    ),
-  },
-];
 
-const initialRows = [
-  { id: 1, name: 'Sublimación de Camisas', type: 'Ropa', quantity: 10 },
-  { id: 2, name: 'Zapatillas deportivas', type: 'Calzado', quantity: 5 },
-  // ...otros datos
-];
 
 function MostrarInventario() {
   const navigate = useNavigate();
   const [searchType, setSearchType] = useState("");
   const [searchName, setSearchName] = useState("");
-  const [filteredRows, setFilteredRows] = useState(initialRows);
+  const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Obtiene los datos de la API
+        const response = await axios.get('URL');
+        setRows(response.data);
+      } catch (error) {
+        console.error('Error al obtener datos de la API', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const redirectToHome = () => {
     navigate('/home');
   };
 
   const handleEdit = (id) => {
-    // Puedes redirigir a una página de edición pasando el ID como parámetro
+    // Redirige a la de edición pasando el ID como parámetro
     navigate(`/editarArticulo/${id}`);
   };
 
+  const columns = [
+    { field: 'name', headerName: 'Nombre', width: 200 },
+    { field: 'type', headerName: 'Tipo', width: 150 },
+    { field: 'quantity', headerName: 'Cantidad', width: 150 },
+    {
+      field: 'edit',
+      headerName: 'Editar',
+      width: 100,
+      renderCell: (params) => (
+        <button onClick={() => handleEdit(params.row.id)}>Editar</button>
+      ),
+    },
+  ];
+
   const handleSearch = () => {
-    // Filtrar los datos según la búsqueda
-    const filteredData = initialRows.filter(
+    // Filtra los datos según la búsqueda
+    const filteredData = rows.filter(
       (row) =>
         row.type.toLowerCase().includes(searchType.toLowerCase()) &&
         row.name.toLowerCase().includes(searchName.toLowerCase())
@@ -73,9 +85,9 @@ function MostrarInventario() {
           </div>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
-              rows={filteredRows}
+              rows={filteredRows.length > 0 ? filteredRows : rows}
               columns={columns}
-              pageSize={10}
+              pageSizeOptions={[10]}
               checkboxSelection
             />
           </div>

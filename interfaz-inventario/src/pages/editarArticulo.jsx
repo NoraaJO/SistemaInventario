@@ -1,7 +1,7 @@
-import React from "react";
+
 import "../App.css";
-import "../styles/mainPage.css"; // Importa tu archivo CSS
-import "../styles/navbar.css"; // Importa tu archivo CSS
+import "../styles/mainPage.css";
+import "../styles/navbar.css";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -31,8 +31,8 @@ function EditarArticulo() {
   };
 
   const handleAgregarClick = () => {
-    // Aquí puedes enviar los datos al API
-    // Puedes simular una solicitud al API o implementar la lógica real del servidor aquí
+    // Envia los datos al API
+    // Simular una solicitud al API 
     console.log("Datos a enviar:", { nombreProducto, tipoProducto, cantidad });
 
     // Después de enviar los datos, puedes redirigir al usuario
