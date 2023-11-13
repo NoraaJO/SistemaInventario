@@ -1,5 +1,5 @@
 // src/components/SignupForm.js
-
+/** 
 
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -134,3 +134,116 @@ const SignupForm = () => {
 
 export default SignupForm;
 
+*/
+
+import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
+
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+const labelStyle = {
+  color: "black",
+};
+
+const SignupForm = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    usuario: localStorage.getItem("usuario") || "",
+    contrasenna: "",
+    confContrasenna: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Almacena los datos en localStorage antes de redirigir
+    localStorage.setItem("usuario", formData.usuario);
+
+    // Realiza la validación del formulario
+    if (
+      formData.usuario === "" ||
+      formData.contrasenna === "" ||
+      formData.confContrasenna === ""
+    ) {
+      // Muestra un mensaje de error o realiza alguna acción de validación
+      return;
+    }
+
+    // Simula el proceso de registro
+    // Puedes agregar aquí la lógica de la API si es necesario
+
+    // Redirige a la página de inicio
+    navigate("/home");
+  };
+
+  const handleCancel = () => {
+    // Navega de vuelta a la página de inicio de sesión
+    navigate("/");
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <div className="login-box">
+          <h3>Crea tu cuenta nueva</h3>
+          <form className="font1" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                className="input"
+                type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Usuario"
+                value={formData.usuario}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                className="input"
+                type="password"
+                id="contrasenna"
+                name="contrasenna"
+                placeholder="Contraseña"
+                value={formData.contrasenna}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                className="input"
+                type="password"
+                id="confContrasenna"
+                name="confContrasenna"
+                placeholder="Confirme su Contraseña"
+                value={formData.confContrasenna}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <button className="button2" type="button" onClick={handleCancel}>
+                Cancelar
+              </button>
+              <button className="button2" type="submit">
+                Crear cuenta
+              </button>
+            </div>
+          </form>
+        </div>
+      </header>
+    </div>
+  );
+};
+
+export default SignupForm;

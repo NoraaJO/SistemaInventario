@@ -14,6 +14,10 @@ function ImageUploader() {
     navigate('/menuPedidos');
   };
 
+  const redirectToReporteInventario = () => {
+    navigate('/reporteInventario');
+  };
+
   const redirectToPrecios = () => {
     navigate('/mostrarPrecios');
   };
@@ -31,7 +35,7 @@ function ImageUploader() {
                 <h4>Menú Principal</h4>
                 <div className= "display-button"> 
                 <button className= "button-main" onClick={redirectToInventory}> Control de Inventario </button>
-                <button className= "button-main" > Reporte de Inventario </button>
+                <button className= "button-main" onClick={redirectToReporteInventario}> Reporte de Inventario </button>
                 <button className= "button-main" onClick={redirectToPrecios} > Precios </button>
                 <button className= "button-main" onClick={redirectToPedidos} > Pedidos </button>
                 <button className= "button-main" onClick={home}> Cerrar Sesión </button>

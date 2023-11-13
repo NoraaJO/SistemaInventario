@@ -1,3 +1,5 @@
+/** 
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -165,4 +167,179 @@ function ActualizarPedido() {
 }
 
 export default ActualizarPedido;
+*/
 
+
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
+import "../styles/mainPage.css";
+import "../styles/navbar.css";
+
+function ActualizarPedido() {
+  const navigate = useNavigate();
+
+  // Estados para almacenar datos obtenidos de localStorage
+  const [clientes, setClientes] = useState([]);
+  const [empleados, setEmpleados] = useState([]);
+  const [estadoOptions, setEstadoOptions] = useState([]);
+
+  // Estado para el pedido actual
+  const [pedido, setPedido] = useState({
+    clientName: "",
+    employeeName: "",
+    estado: "",
+    price: "",
+    descripcion: "",
+  });
+
+  // Hook de navegación de React Router
+  const redirectToInventory = () => {
+    navigate('/inventario');
+  };
+
+  // Efecto para obtener datos de localStorage al cargar el componente
+  useEffect(() => {
+    // Obtiene los datos almacenados actualmente en localStorage
+    const storedClientes = JSON.parse(localStorage.getItem("clientes")) || [];
+    const storedEmpleados = JSON.parse(localStorage.getItem("empleados")) || [];
+    const storedEstadoOptions = JSON.parse(localStorage.getItem("estadoOptions")) || [];
+
+    setClientes(storedClientes);
+    setEmpleados(storedEmpleados);
+    setEstadoOptions(storedEstadoOptions);
+  }, []);
+
+  // Manejador de cambios en los inputs
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPedido({
+      ...pedido,
+      [name]: value,
+    });
+  };
+
+  // Manejador de cambios en los selects
+  const handleSelectChange = (e) => {
+    const { name, value } = e.target;
+    setPedido({
+      ...pedido,
+      [name]: value,
+    });
+  };
+
+  // Función para manejar la actualización del pedido
+  const handleUpdatePedido = () => {
+    // Lógica para actualizar el pedido en localStorage
+    // Puedes ajustar la lógica según tus necesidades específicas
+
+    // Obtiene los pedidos almacenados actualmente en localStorage
+    const existingPedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    // Crea un nuevo pedido con los datos actualizados
+    const updatedPedido = {
+      id: existingPedidos.length + 1, // Puedes ajustar la lógica para asignar IDs
+      clientName: pedido.clientName,
+      employeeName: pedido.employeeName,
+      estado: pedido.estado,
+      price: pedido.price,
+      descripcion: pedido.descripcion,
+    };
+
+    // Agrega el pedido actualizado a los datos existentes
+    const updatedPedidos = [...existingPedidos, updatedPedido];
+
+    // Actualiza los datos en localStorage
+    localStorage.setItem("pedidos", JSON.stringify(updatedPedidos));
+
+    // Después de actualizar los datos, redirige al usuario
+    redirectToInventory();
+  };
+
+  return (
+    <div className="App">
+      <div className="App-header-login">
+        <div className="main-box-pedidos">
+          <h6>Actualizar Pedido</h6>
+          <div className="input-column">
+            <form className="input-column">
+              <h7>Nombre del Cliente</h7>
+              <select
+                name="clientName"
+                onChange={handleSelectChange}
+                value={pedido.clientName}
+              >
+                <option value="">Selecciona un cliente</option>
+                {clientes.map((cliente) => (
+                  <option key={cliente.id} value={cliente.name}>
+                    {cliente.name}
+                  </option>
+                ))}
+              </select>
+
+              <h7>Nombre del Empleado</h7>
+              <select
+                name="employeeName"
+                onChange={handleSelectChange}
+                value={pedido.employeeName}
+              >
+                <option value="">Selecciona un empleado</option>
+                {empleados.map((empleado) => (
+                  <option key={empleado.id} value={empleado.name}>
+                    {empleado.name}
+                  </option>
+                ))}
+              </select>
+            </form>
+          </div>
+          <div className="input-row">
+            <h7>Estado</h7>
+            <select
+              name="estado"
+              onChange={handleSelectChange}
+              value={pedido.estado}
+            >
+              <option value="">Selecciona un estado</option>
+              {estadoOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            <h7>Precio</h7>
+            <form className="input-row">
+              <input
+                type="text"
+                name="price"
+                placeholder="Precio"
+                value={pedido.price}
+                onChange={handleInputChange}
+              />
+            </form>
+          </div>
+          <div className="input-column">
+            <h7>Descripción</h7>
+            <textarea
+              name="descripcion"
+              placeholder="Agrega una descripción..."
+              value={pedido.descripcion}
+              onChange={handleInputChange}
+            ></textarea>
+          </div>
+
+          <div className="buttons">
+            <button className="buttons-create" onClick={redirectToInventory}>
+              Volver
+            </button>
+            <button className="buttons-create" onClick={handleUpdatePedido}>
+              Actualizar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ActualizarPedido;

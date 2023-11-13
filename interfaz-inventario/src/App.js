@@ -10,8 +10,10 @@ import { LogOut } from "./pages/logout";
 import MainPage from "./pages/mainPage";
 import MenuPedidos from './pages/menuPedidos';
 import MostrarInventario from "./pages/mostrarInventario";
+import MostrarPedidos from "./pages/mostrarPedidos";
 import MostrarPrecios from './pages/mostrarPrecios';
 import NuevoPedido from './pages/nuevoPedido';
+import ReporteInventario from './pages/reporteInventario';
 
 function App() {
   return (
@@ -25,9 +27,11 @@ function App() {
             <Route path="actualizarPedido" element={<ActualizarPedido />} />
             <Route path="mostrarPrecios" element={<MostrarPrecios />} />
             <Route path="mostrarInventario" element={<MostrarInventario />} />
+            <Route path="mostrarPedidos" element={<MostrarPedidos />} />
             <Route path="menuPedidos" element={<MenuPedidos />} />
             <Route path="nuevoPedido" element={<NuevoPedido />} />
             <Route path="editarArticulo" element={<EditarArticulo/>} />
+            <Route path="reporteInventario" element={<ReporteInventario/>} />
             <Route path="logout" element={<LogOut />} />
           <Route path="signupForm" element={<SignupForm />} />
         </Routes>
